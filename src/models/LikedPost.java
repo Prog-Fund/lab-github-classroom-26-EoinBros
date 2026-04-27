@@ -10,12 +10,7 @@ public abstract class LikedPost extends Post {
 
     @Override
     public String displayCondensed() {
-        if(likes > 0) {
-            return super.getAuthor() + " (" + likes + " likes) ";
-        }
-        else {
-            return super.getAuthor() + " (0 likes) ";
-        }
+        return super.getAuthor() + " (" + likes + " likes) ";
     }
 
     public int getLikes() {
@@ -36,14 +31,7 @@ public abstract class LikedPost extends Post {
 
     public String display() {
         String str = super.display();
-
-        if(likes > 0) {
-            str += ("  -  " + likes + " people like this.\n");
-        }
-        else {
-            str += "0 likes.\n";
-        }
-
+        str += likes + " likes.\n";
         return str;
     }
 

@@ -12,13 +12,29 @@ public class DogClass extends MammalClass {
         return size;
     }
 
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    @Override
     public double calculateFee() {
-        if (size.equals("large")) {
+        if (size == null) {
+            return 20;
+        }
+        String normalizedSize = size.toLowerCase();
+        if (normalizedSize.equals("large")) {
             return 30;
-        } else if (size.equals("medium")) {
+        } else if (normalizedSize.equals("medium")) {
             return 25;
         } else {
             return 20;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Dog - " + super.toString()
+                + ", Neutered: " + neutered
+                + ", Size: " + size;
     }
 }

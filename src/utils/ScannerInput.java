@@ -26,7 +26,7 @@ public class ScannerInput {
      */
     public static int readNextInt(String prompt) {
         do {
-            var scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             try {
                 System.out.print(prompt);
                 return Integer.parseInt(scanner.next());
@@ -46,7 +46,7 @@ public class ScannerInput {
      */
     public static double readNextDouble(String prompt) {
         do {
-            var scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             try{
                 System.out.print(prompt);
                 return Double.parseDouble(scanner.next());

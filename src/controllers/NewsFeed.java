@@ -25,8 +25,8 @@ public class NewsFeed {
     public String show() {
         String str = "";
 
-        for(Post post: posts) {
-            str += posts.indexOf(post) + ": " + post.displayCondensed() + "\n";
+        for (int i = 0; i < posts.size(); i++) {
+            str += i + ": " + posts.get(i).displayCondensed() + "\n";
         }
 
         if (str.isEmpty()){
@@ -40,9 +40,10 @@ public class NewsFeed {
     public String showPhotoPosts() {
         String str = "";
 
-        for(Post post: posts) {
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
             if (post instanceof PhotoPost) {
-                str += posts.indexOf(post) + ": " + post.display() + "\n";
+                str += i + ": " + post.display() + "\n";
             }
         }
 
@@ -57,9 +58,10 @@ public class NewsFeed {
     public String showMessagePosts() {
         String str = "";
 
-        for(Post post: posts) {
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
             if (post instanceof MessagePost) {
-                str += posts.indexOf(post) + ": " + post.display() + "\n";
+                str += i + ": " + post.display() + "\n";
             }
         }
 
@@ -74,9 +76,10 @@ public class NewsFeed {
     public String showEventPosts() {
         String str = "";
 
-        for(Post post: posts) {
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
             if (post instanceof EventPost) {
-                str += posts.indexOf(post) + ": " + post.display() + "\n";
+                str += i + ": " + post.display() + "\n";
             }
         }
 
@@ -187,9 +190,8 @@ public class NewsFeed {
     }
 
     public void likeAPost(int index) {
-        Post post = null;
         if (isValidIndex(index)) {
-            post = posts.get(index);
+            Post post = posts.get(index);
             if ((post instanceof LikedPost)){
                 ((LikedPost) post).likeAPost();
             }
@@ -197,9 +199,8 @@ public class NewsFeed {
     }
 
     public void unLikeAPost(int index) {
-        Post post = null;
         if (isValidIndex(index)) {
-            post = posts.get(index);
+            Post post = posts.get(index);
             if ((post instanceof LikedPost)){
                 ((LikedPost) post).unlikeAPost();
             }
@@ -214,7 +215,7 @@ public class NewsFeed {
     @SuppressWarnings("unchecked")
     public void load() throws Exception {
         //list of classes that you wish to include in the serialisation, separated by a comma
-        Class<?>[] classes = new Class[] { EventPost.class, MessagePost.class, PhotoPost.class, Post.class};
+        Class<?>[] classes = new Class<?>[] { EventPost.class, MessagePost.class, PhotoPost.class, Post.class};
 
         //setting up the xstream object with default security and the above classes
         XStream xstream = new XStream(new DomDriver());

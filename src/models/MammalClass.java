@@ -1,6 +1,6 @@
 package models;
 
-public class MammalClass extends PetClass {
+public abstract class MammalClass extends PetClass {
     protected boolean neutered;
 
     public MammalClass(String name, int age, String ownerName, boolean neutered) {
@@ -10,5 +10,9 @@ public class MammalClass extends PetClass {
 
     public boolean isNeutered() {
         return neutered;
+    }
+
+    public void setNeutered(boolean neutered) {
+        this.neutered = neutered;
     }
 }

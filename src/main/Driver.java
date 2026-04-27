@@ -12,44 +12,55 @@ public class Driver {
     private final NewsFeed newsFeed = new NewsFeed();
 
     public static void main(String[] args) {
-        new Driver();
+        Driver driver = new Driver();
+        driver.runMenu();
     }
 
-    public Driver() {
-        runMenu();
+    private int mainMenu() {
+        System.out.println("Social Network Menu");
+        System.out.println("-----------------------");
+        System.out.println("1) Add a Post");
+        System.out.println("2) Update a Post");
+        System.out.println("3) Delete a Post");
+        System.out.println("4) List Posts");
+        System.out.println("5) Like / Unlike Posts");
+        System.out.println("-----------------------");
+        System.out.println("6) Save Posts");
+        System.out.println("7) Load Posts");
+        System.out.println("-----------------------");
+        System.out.println("0) Exit");
+        return ScannerInput.readNextInt("==>> ");
     }
 
-    private int mainMenu(){
-        return ScannerInput.readNextInt("""
-               Social Network Menu
-                  -----------------------
-                  1) Add a Post
-                  2) Update a Post
-                  3) Delete a Post
-                  4) List Posts
-                  5) Like / Unlike Posts
-                  -----------------------
-                  6) Save Posts
-                  7) Load Posts
-                  -----------------------
-                  0) Exit
-               ==>>  """);
-    }
-
-    private void runMenu(){
+    private void runMenu() {
         int option = mainMenu();
 
-        while (option != 0){
-
-            switch (option){
-                case 1 -> addPost();
-                case 2 -> updatePost();
-                case 3 -> deletePost();
-                case 4 -> viewPosts();
-                case 5 -> likeUnlikePosts();
-                case 6 -> savePosts();
-                case 7 -> loadPosts();
-                default -> System.out.println("Invalid option entered: " + option);
+        while (option != 0) {
+            switch (option) {
+                case 1:
+                    addPost();
+                    break;
+                case 2:
+                    updatePost();
+                    break;
+                case 3:
+                    deletePost();
+                    break;
+                case 4:
+                    viewPosts();
+                    break;
+                case 5:
+                    likeUnlikePosts();
+                    break;
+                case 6:
+                    savePosts();
+                    break;
+                case 7:
+                    loadPosts();
+                    break;
+                default:
+                    System.out.println("Invalid option entered: " + option);
+                    break;
             }
 
             //pause the program so that the user can read what we just printed to the terminal window
@@ -59,9 +70,7 @@ public class Driver {
             option = mainMenu();
         }
 
-        //the user chose option 0, so exit the program
         System.out.println("Exiting...bye");
-        System.exit(0);
     }
 
 
@@ -73,33 +82,40 @@ public class Driver {
 
         boolean isAdded = false;
 
-        int option = ScannerInput.readNextInt("""
-                    ---------------------------
-                    |   1) Add a Message Post |
-                    |   2) Add a Photo Post   |
-                    |   3) Add an Event Post  |
-                    ---------------------------
-                    ==>> """);
+        System.out.println("---------------------------");
+        System.out.println("1) Add a Message Post");
+        System.out.println("2) Add a Photo Post");
+        System.out.println("3) Add an Event Post");
+        System.out.println("---------------------------");
+        int option = ScannerInput.readNextInt("==>> ");
 
         switch (option) {
-            case 1 -> {
+            case 1:
+            {
                 String authorName = ScannerInput.readNextLine("Enter the Author Name:  ");
                 String message = ScannerInput.readNextLine("Enter the Message:  ");
                 isAdded = newsFeed.addPost(new MessagePost(authorName, message));
             }
-            case 2 -> {
+                break;
+            case 2:
+            {
                 String authorName = ScannerInput.readNextLine("Enter the Author Name:  ");
                 String caption = ScannerInput.readNextLine("Enter the Caption:  ");
                 String filename = ScannerInput.readNextLine("Enter the Filename:  ");
                 isAdded = newsFeed.addPost(new PhotoPost(authorName, caption, filename));
             }
-            case 3 -> {
+                break;
+            case 3:
+            {
                 String authorName = ScannerInput.readNextLine("Enter the Author Name:  ");
                 String eventName = ScannerInput.readNextLine("Enter the Event Name:  ");
                 double eventCost = ScannerInput.readNextDouble("Enter the Event Cost:  ");
                 isAdded = newsFeed.addPost(new EventPost(authorName, eventName, eventCost));
             }
-            default -> System.out.println("Invalid option entered: " + option);
+                break;
+            default:
+                System.out.println("Invalid option entered: " + option);
+                break;
         }
 
         if (isAdded){
@@ -120,16 +136,15 @@ public class Driver {
         if (newsFeed.numberOfPosts() > 0) {
             boolean isUpdated = false;
 
-            int option = ScannerInput.readNextInt("""
-                    ---------------------------
-                    |   1) Update a Message Post |
-                    |   2) Update a Photo Post   |
-                    |   3) Update an Event Post  |
-                    ---------------------------
-                    ==>> """);
+            System.out.println("---------------------------");
+            System.out.println("1) Update a Message Post");
+            System.out.println("2) Update a Photo Post");
+            System.out.println("3) Update an Event Post");
+            System.out.println("---------------------------");
+            int option = ScannerInput.readNextInt("==>> ");
 
             switch (option) {
-                case 1 -> {
+                case 1:
                     //ask the user to enter the index of the object to update, and assuming it's valid and is a MessagePost,
                     //gather the new data from the user and update the selected object.
                     showMessagePosts();
@@ -142,8 +157,8 @@ public class Driver {
                             isUpdated = newsFeed.updateMessagePost(messageIndex, author, message);
                         }
                     }
-                }
-                case 2 -> {
+                    break;
+                case 2:
                     //ask the user to enter the index of the object to update, and assuming it's valid and is a PhotoPost,
                     //gather the new data from the user and update the selected object.
                     showPhotoPosts();
@@ -156,8 +171,8 @@ public class Driver {
                             isUpdated = newsFeed.updatePhotoPost(photoIndex, author, caption, filename);
                         }
                     }
-                }
-                case 3 -> {
+                    break;
+                case 3:
                     //ask the user to enter the index of the object to update, and assuming it's valid and is a PhotoPost,
                     //gather the new data from the user and update the selected object.
                     showEventPosts();
@@ -170,8 +185,10 @@ public class Driver {
                             isUpdated = newsFeed.updateEventPost(eventIndex, author, eventName, eventCost);
                         }
                     }
-                }
-                default -> System.out.println("Invalid option entered: " + option);
+                    break;
+                default:
+                    System.out.println("Invalid option entered: " + option);
+                    break;
             }
 
             if (isUpdated) {
@@ -213,21 +230,30 @@ public class Driver {
     //The user is asked if they want to view all posts, or just the messages or photos ones.
     private void viewPosts() {
         if (newsFeed.numberOfPosts() > 0) {
-            int option = ScannerInput.readNextInt("""
-                    ---------------------------
-                    |   1) View ALL Posts     |
-                    |   2) View Message Posts |
-                    |   3) View Photo Posts   |
-                    |   4) View Event Posts   |
-                    ---------------------------
-                    ==>>  """);
+            System.out.println("---------------------------");
+            System.out.println("1) View ALL Posts");
+            System.out.println("2) View Message Posts");
+            System.out.println("3) View Photo Posts");
+            System.out.println("4) View Event Posts");
+            System.out.println("---------------------------");
+            int option = ScannerInput.readNextInt("==>> ");
 
             switch (option) {
-                case 1 -> showPosts();
-                case 2 -> showMessagePosts();
-                case 3 -> showPhotoPosts();
-                case 4 -> showEventPosts();
-                default -> System.out.println("Invalid option entered: " + option);
+                case 1:
+                    showPosts();
+                    break;
+                case 2:
+                    showMessagePosts();
+                    break;
+                case 3:
+                    showPhotoPosts();
+                    break;
+                case 4:
+                    showEventPosts();
+                    break;
+                default:
+                    System.out.println("Invalid option entered: " + option);
+                    break;
             }
         }
         else{
@@ -265,30 +291,35 @@ public class Driver {
     //------------------------------------------------------------------------------------------
     private void likeUnlikePosts(){
 
-        int likeOption = ScannerInput.readNextInt("""
-                    ---------------------------
-                    | Do you want to...       |
-                    |   1) Like A post        |
-                    |   2) Unlike a post      |
-                    ---------------------------
-                    ==>> """);
+        System.out.println("---------------------------");
+        System.out.println("Do you want to...");
+        System.out.println("1) Like a post");
+        System.out.println("2) Unlike a post");
+        System.out.println("---------------------------");
+        int likeOption = ScannerInput.readNextInt("==>> ");
 
         switch (likeOption) {
-            case 1 -> {
+            case 1:
+            {
                 showMessagePosts();
                 showPhotoPosts();
                 int index = ScannerInput.readNextInt("Enter the index of the post ==> ");
                 newsFeed.likeAPost(index);
                 System.out.println(newsFeed.findPost(index).display());
             }
-            case 2 -> {
+                break;
+            case 2:
+            {
                 showMessagePosts();
                 showPhotoPosts();
                 int index = ScannerInput.readNextInt("Enter the index of the post ==> ");
                 newsFeed.unLikeAPost(index);
                 System.out.println(newsFeed.findPost(index).display());
             }
-            default -> System.out.println("Invalid option entered: " + likeOption);
+                break;
+            default:
+                System.out.println("Invalid option entered: " + likeOption);
+                break;
         }
 
     }

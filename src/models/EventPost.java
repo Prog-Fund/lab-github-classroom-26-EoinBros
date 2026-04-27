@@ -10,7 +10,9 @@ public class EventPost extends Post {
     public EventPost (String author, String eventName, double eventCost){
         super(author);
         this.eventName = Utilities.truncateString(eventName, 35);
-        setEventCost(eventCost);
+        if (Utilities.validRange(eventCost, 0, 99999)) {
+            this.eventCost = eventCost;
+        }
     }
 
     @Override
