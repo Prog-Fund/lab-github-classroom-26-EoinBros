@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Driver" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="Driver" />
+    <option name="MAIN_CLASS_NAME" value="main.Driver" />
     <method v="2" />
   </configuration>
 </component>

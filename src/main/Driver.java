@@ -11,14 +11,9 @@ public class Driver {
     private final DayCare dayCare = new DayCare();
 
     public static void main(String[] args) {
-
         Driver driver = new Driver();
-
         driver.runMenu();
-
     }
-
-}
 
     private void runMenu() {
         int option = mainMenu();
@@ -36,9 +31,12 @@ public class Driver {
                 sortPets();
             }
             else if (option == 5) {
+                runStaffMenu();
+            }
+            else if (option == 10) {
                 saveAll();
             }
-            else if (option == 6) {
+            else if (option == 11) {
                 loadAll();
             }
             else {
@@ -57,8 +55,9 @@ public class Driver {
         System.out.println("2) Reports Menu");
         System.out.println("3) Search Pets");
         System.out.println("4) Sort Pets");
-        System.out.println("5) Save all");
-        System.out.println("6) Load all");
+        System.out.println("5) Staff Menu (Check in/out)");
+        System.out.println("10) Save all");
+        System.out.println("11) Load all");
         System.out.println("0) Exit");
         return ScannerInput.readNextInt("==>> ");
     }
@@ -108,10 +107,10 @@ public class Driver {
                 System.out.println(dayCare.listAllCats());
             }
             else if (option == 4) {
-                System.out.println(dayCare.listAllDangerousDogs());
+                System.out.println(dayCare.listAllIndoorCats());
             }
             else if (option == 5) {
-                System.out.println(dayCare.listAllIndoorCats());
+                System.out.println(dayCare.listAllDangerousDogs());
             }
             else if (option == 6) {
                 int age = ScannerInput.readNextInt("Enter age: ");
@@ -127,6 +126,10 @@ public class Driver {
             else if (option == 9) {
                 System.out.println("Weekly income: " + dayCare.getWeeklyIncome());
             }
+            else if (option == 10) {
+                int day = readDayIndex();
+                System.out.println(dayCare.listPetsAttendingOnDay(day));
+            }
             else {
                 System.out.println("Invalid option: " + option);
             }
@@ -139,12 +142,13 @@ public class Driver {
         System.out.println("1) List all Pets");
         System.out.println("2) List all Dogs");
         System.out.println("3) List all Cats");
-        System.out.println("4) List all Dangerous Dogs");
-        System.out.println("5) List all Indoor Cats");
+        System.out.println("4) List all Indoor Cats");
+        System.out.println("5) List all Dangerous Dogs");
         System.out.println("6) List all dogs older than an age");
         System.out.println("7) List all cats by favourite toy");
         System.out.println("8) List all animals that are neutered");
         System.out.println("9) Produce Weekly Income Report");
+        System.out.println("10) List all pets attending on a given day");
         System.out.println("0) Return to main menu");
         return ScannerInput.readNextInt("==>> ");
     }
@@ -159,6 +163,7 @@ public class Driver {
         String name = ScannerInput.readNextLine("Enter pet name: ");
         int age = ScannerInput.readNextInt("Enter age: ");
         int id = ScannerInput.readNextInt("Enter id: ");
+        String temperament = ScannerInput.readNextLine("Enter temperament: ");
 
         String ownerName = ScannerInput.readNextLine("Enter owner name: ");
         String ownerPhone = ScannerInput.readNextLine("Enter owner phone: ");
@@ -172,8 +177,11 @@ public class Driver {
             double weight = ScannerInput.readNextDouble("Enter weight: ");
             boolean vaccinated = readBoolean("Is vaccinated (true/false): ");
             String breed = ScannerInput.readNextLine("Enter breed: ");
+            DogSize size = readDogSize();
             boolean dangerous = readBoolean("Is dangerous breed (true/false): ");
-            pet = new Dog(name, age, owner, id, sex, neutered, weight, vaccinated, breed, dangerous);
+            Dog dog = new Dog(name, age, owner, id, sex, neutered, weight, vaccinated, breed, size);
+            dog.setDangerousBreed(dangerous);
+            pet = dog;
         }
         else if (type == 2) {
             char sex = ScannerInput.readNextChar("Enter sex (M/F/U): ");
@@ -192,8 +200,13 @@ public class Driver {
         else if (type == 4) {
             double wingSpan = ScannerInput.readNextDouble("Enter wingspan: ");
             boolean canFly = readBoolean("Can fly (true/false): ");
-            int vocab = ScannerInput.readNextInt("Enter vocabulary size: ");
-            pet = new Parrot(name, age, owner, id, wingSpan, canFly, vocab);
+            int social = readNeeds("Enter socialisation needs (1-5): ");
+            int enrich = readNeeds("Enter enrichment needs (1-5): ");
+            pet = new Parrot(name, age, owner, id, wingSpan, canFly, social, enrich);
+        }
+
+        if (pet != null) {
+            pet.setTemperament(temperament);
         }
 
         boolean added = dayCare.addPet(pet);
@@ -230,8 +243,10 @@ public class Driver {
 
         String newName = ScannerInput.readNextLine("Enter new name: ");
         int newAge = ScannerInput.readNextInt("Enter new age: ");
+        String newTemperament = ScannerInput.readNextLine("Enter new temperament: ");
         pet.setName(newName);
         pet.setAge(newAge);
+        pet.setTemperament(newTemperament);
 
         System.out.println("Updated: " + pet);
     }
@@ -285,5 +300,74 @@ public class Driver {
     private boolean readBoolean(String prompt) {
         String value = ScannerInput.readNextLine(prompt).trim().toLowerCase();
         return value.equals("true") || value.equals("t") || value.equals("yes") || value.equals("y");
+    }
+
+    private int readDayIndex() {
+        int day = ScannerInput.readNextInt("Enter day of week (1-7): ");
+        while (day < 1 || day > 7) {
+            System.out.println("Day must be between 1 and 7.");
+            day = ScannerInput.readNextInt("Enter day of week (1-7): ");
+        }
+        return day;
+    }
+
+    private int readNeeds(String prompt) {
+        int value = ScannerInput.readNextInt(prompt);
+        while (value < 1 || value > 5) {
+            System.out.println("Value must be between 1 and 5.");
+            value = ScannerInput.readNextInt(prompt);
+        }
+        return value;
+    }
+
+    private DogSize readDogSize() {
+        System.out.println("Dog size:");
+        System.out.println("1) SMALL");
+        System.out.println("2) MEDIUM");
+        System.out.println("3) LARGE");
+        System.out.println("4) XL");
+        int option = ScannerInput.readNextInt("==>> ");
+        if (option == 1) return DogSize.SMALL;
+        if (option == 3) return DogSize.LARGE;
+        if (option == 4) return DogSize.XL;
+        return DogSize.MEDIUM;
+    }
+
+    private void runStaffMenu() {
+        int option = staffMenu();
+        while (option != 0) {
+            if (option == 1) {
+                int id = ScannerInput.readNextInt("Enter pet id: ");
+                int day = readDayIndex();
+                if (dayCare.checkInPetById(id, day)) {
+                    System.out.println("Checked in.");
+                } else {
+                    System.out.println("No pet found with that id.");
+                }
+            } else if (option == 2) {
+                int id = ScannerInput.readNextInt("Enter pet id: ");
+                int day = readDayIndex();
+                if (dayCare.checkOutPetById(id, day)) {
+                    System.out.println("Checked out.");
+                } else {
+                    System.out.println("No pet found with that id.");
+                }
+            } else if (option == 3) {
+                int day = readDayIndex();
+                System.out.println(dayCare.listPetsAttendingOnDay(day));
+            } else {
+                System.out.println("Invalid option: " + option);
+            }
+            option = staffMenu();
+        }
+    }
+
+    private int staffMenu() {
+        System.out.println("---- Staff Menu ----");
+        System.out.println("1) Check in a pet for a day");
+        System.out.println("2) Check out a pet for a day");
+        System.out.println("3) List pets attending on a day");
+        System.out.println("0) Return to main menu");
+        return ScannerInput.readNextInt("==>> ");
     }
 }

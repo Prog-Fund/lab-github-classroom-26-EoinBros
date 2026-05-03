@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC_DIR="$ROOT_DIR/src"
 LIB_DIR="$ROOT_DIR/lib"
 OUT_DIR="$ROOT_DIR/out/classes"
-MAIN_CLASS="Driver"
+MAIN_CLASS="main.Driver"
 
 if [[ ! -d "$SRC_DIR" ]]; then
   echo "Missing src/ directory at: $SRC_DIR" >&2

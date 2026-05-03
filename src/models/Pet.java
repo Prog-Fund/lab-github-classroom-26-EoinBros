@@ -9,6 +9,7 @@ public class Pet {
     private String name = "";
     private boolean[] daysAttending = new boolean[7];
     private Owner owner = null;
+    private String temperament = "";
 
     public Pet(String name, int age, Owner owner, int id) {
         initName(name);
@@ -29,6 +30,13 @@ public class Pet {
         }
     }
 
+    public boolean isAttendingOnDay(int dayIndex) {
+        if (Utilities.validIntRange(dayIndex, 1, 7)) {
+            return daysAttending[dayIndex - 1];
+        }
+        return false;
+    }
+
     public String getName() {
         return name;
     }
@@ -39,6 +47,10 @@ public class Pet {
 
     public boolean[] getDaysAttending() {
         return daysAttending;
+    }
+
+    public String getTemperament() {
+        return temperament;
     }
 
     public int getAge() {
@@ -83,6 +95,14 @@ public class Pet {
         }
     }
 
+    public void setTemperament(String temperament) {
+        if (temperament == null) {
+            this.temperament = "";
+            return;
+        }
+        this.temperament = Utilities.truncateString(temperament.trim(), 20);
+    }
+
     public int numOfDaysAttending() {
         int count = 0;
         for (boolean attending : daysAttending) {
@@ -104,6 +124,7 @@ public class Pet {
                 + ", name='" + name + '\''
                 + ", age=" + age
                 + ", owner=" + owner
+                + ", temperament='" + temperament + '\''
                 + ", daysAttending=" + numOfDaysAttending()
                 + ", weeklyFee=" + calculateWeeklyFee()
                 + '}';

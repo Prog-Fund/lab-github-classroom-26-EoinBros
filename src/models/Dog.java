@@ -4,15 +4,24 @@ import utils.Utilities;
 
 public class Dog extends Mammal {
 
-    public static final float NONDANGEROUS_DAILY_RATE = 15;
-    public static final float DANGEROUS_DAILY_RATE = 25;
+    public static final float SMALL_DAILY_RATE = 12;
+    public static final float MEDIUM_DAILY_RATE = 15;
+    public static final float LARGE_DAILY_RATE = 18;
+    public static final float XL_DAILY_RATE = 22;
 
     private boolean dangerousBreed = false;
     private String breed = "";
+    private DogSize size = DogSize.MEDIUM;
 
-    public Dog(String name, int age, Owner owner, int id, char sex, boolean neutered, double weight, boolean vaccinated, String breed, boolean dangerousBreed) {
+    public Dog(String name, int age, Owner owner, int id, char sex, boolean neutered, double weight, boolean vaccinated, String breed, DogSize size) {
         super(name, age, owner, id, sex, neutered, weight, vaccinated);
         setBreed(breed);
+        setSize(size);
+    }
+
+    public Dog(String name, int age, Owner owner, int id, char sex, boolean neutered, double weight, boolean vaccinated, String breed, boolean dangerousBreed) {
+        this(name, age, owner, id, sex, neutered, weight, vaccinated, breed, dangerousBreed ? DogSize.XL : DogSize.MEDIUM);
+        // Keep legacy flag for backwards compatibility with existing code/reports.
         setDangerousBreed(dangerousBreed);
     }
 
@@ -24,9 +33,22 @@ public class Dog extends Mammal {
         return dangerousBreed;
     }
 
+    public DogSize getSize() {
+        return size;
+    }
+
+    public void setSize(DogSize size) {
+        if (size != null) {
+            this.size = size;
+        }
+    }
+
     @Override
     public double calculateWeeklyFee() {
-        double dailyRate = dangerousBreed ? DANGEROUS_DAILY_RATE : NONDANGEROUS_DAILY_RATE;
+        double dailyRate = MEDIUM_DAILY_RATE;
+        if (size == DogSize.SMALL) dailyRate = SMALL_DAILY_RATE;
+        if (size == DogSize.LARGE) dailyRate = LARGE_DAILY_RATE;
+        if (size == DogSize.XL) dailyRate = XL_DAILY_RATE;
         return numOfDaysAttending() * dailyRate;
     }
 
@@ -42,7 +64,7 @@ public class Dog extends Mammal {
     public String toString() {
         return "Dog{" + super.toString()
                 + ", breed='" + breed + '\''
-                + ", dangerousBreed=" + dangerousBreed
+                + ", size=" + size
                 + '}';
     }
 
@@ -58,6 +80,7 @@ public class Dog extends Mammal {
         if (isNeutered() != dog.isNeutered()) return false;
         if (Double.compare(dog.getWeight(), getWeight()) != 0) return false;
         if (isVaccinated() != dog.isVaccinated()) return false;
+        if (size != dog.size) return false;
         if (breed != null ? !breed.equals(dog.breed) : dog.breed != null) return false;
         if (getName() != null ? !getName().equals(dog.getName()) : dog.getName() != null) return false;
         return getOwner() != null ? getOwner().equals(dog.getOwner()) : dog.getOwner() == null;

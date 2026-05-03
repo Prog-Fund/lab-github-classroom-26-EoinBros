@@ -14,5 +14,5 @@ chmod +x ./run.sh
 ```bash
 mkdir -p out/classes
 javac -cp "lib/*" -d out/classes $(find src -name "*.java")
-java -cp "out/classes:lib/*" Driver
+java -cp "out/classes:lib/*" main.Driver
 ```

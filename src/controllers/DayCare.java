@@ -339,23 +339,54 @@ public class DayCare {
     }
 
     public int numberOfParrotsByVocabularySize(int vocabSize) {
+        // Legacy API kept for compatibility; parrots are no longer modeled by vocabulary size.
+        // Treat the old vocabSize param as "socialisationNeeds" for a rough mapping.
+        return numberOfParrotsBySocialisationNeeds(vocabSize);
+    }
+
+    public int numberOfParrotsBySocialisationNeeds(int needs) {
         int count = 0;
         for (Pet pet : pets) {
             if (pet instanceof Parrot) {
                 Parrot parrot = (Parrot) pet;
-                int vocab = 0;
-                try {
-                    vocab = Integer.parseInt(parrot.getVocabularySize());
-                } catch (NumberFormatException e) {
-                    vocab = 0;
-                }
-
-                if (vocab == vocabSize) {
+                if (parrot.getSocialisationNeeds() == needs) {
                     count++;
                 }
             }
         }
         return count;
+    }
+
+    public String listPetsAttendingOnDay(int dayIndex) {
+        String output = "";
+        for (int i = 0; i < pets.size(); i++) {
+            Pet pet = pets.get(i);
+            if (pet.isAttendingOnDay(dayIndex)) {
+                output += i + ": " + pet + "\n";
+            }
+        }
+        if (output.isEmpty()) {
+            return "No Pets attending on day " + dayIndex;
+        }
+        return output;
+    }
+
+    public boolean checkInPetById(int id, int dayIndex) {
+        Pet pet = getPetById(id);
+        if (pet == null) {
+            return false;
+        }
+        pet.checkIn(dayIndex);
+        return true;
+    }
+
+    public boolean checkOutPetById(int id, int dayIndex) {
+        Pet pet = getPetById(id);
+        if (pet == null) {
+            return false;
+        }
+        pet.checkOut(dayIndex);
+        return true;
     }
 
     public Pet updatePet(int index, Pet updatedPet) {
@@ -461,7 +492,7 @@ public class DayCare {
 
     @SuppressWarnings("unchecked")
     public void load() throws Exception {
-        Class<?>[] classes = new Class<?>[] { Pet.class, Mammal.class, Bird.class, Dog.class, Cat.class, Parrot.class, Owner.class };
+        Class<?>[] classes = new Class<?>[] { Pet.class, Mammal.class, Bird.class, Dog.class, Cat.class, Parrot.class, Owner.class, DogSize.class };
 
         XStream xstream = new XStream(new DomDriver());
         XStream.setupDefaultSecurity(xstream);
