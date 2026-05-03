@@ -1,7 +1,5 @@
 package models;
 
-import utils.Utilities;
-
 public class Cat extends Mammal {
 
     private String favouriteToy = "";
@@ -13,16 +11,22 @@ public class Cat extends Mammal {
         setFavouriteToy(favouriteToy);
     }
 
-    public void setIndoorCat(boolean indoorCat) {
-        this.indoorCat = indoorCat;
-    }
-
     public String getFavouriteToy() {
         return favouriteToy;
     }
 
+    public boolean isIndoorCat() {
+        return indoorCat;
+    }
+
     public void setFavouriteToy(String favouriteToy) {
-        this.favouriteToy = Utilities.truncateString(favouriteToy, 30);
+        if (favouriteToy != null) {
+            this.favouriteToy = favouriteToy;
+        }
+    }
+
+    public void setIndoorCat(boolean indoorCat) {
+        this.indoorCat = indoorCat;
     }
 
     @Override
@@ -31,15 +35,27 @@ public class Cat extends Mammal {
         return numOfDaysAttending() * dailyRate;
     }
 
-    public boolean isIndoorCat() {
-        return indoorCat;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cat cat = (Cat) o;
+        return getId() == cat.getId()
+                && getAge() == cat.getAge()
+                && getSex() == cat.getSex()
+                && isNeutered() == cat.isNeutered()
+                && Double.compare(getWeight(), cat.getWeight()) == 0
+                && isVaccinated() == cat.isVaccinated()
+                && indoorCat == cat.indoorCat
+                && favouriteToy.equals(cat.favouriteToy)
+                && getName().equals(cat.getName());
     }
 
     @Override
     public String toString() {
         return "Cat{" + super.toString()
-                + ", favouriteToy='" + favouriteToy + '\''
+                + ", favouriteToy='" + favouriteToy + "'"
                 + ", indoorCat=" + indoorCat
-                + '}';
+                + "}";
     }
 }

@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Driver" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="main.Driver" />
+    <option name="MAIN_CLASS_NAME" value="Driver" />
+    <module name="lab-github-classroom-26-EoinBros" />
     <method v="2" />
   </configuration>
 </component>

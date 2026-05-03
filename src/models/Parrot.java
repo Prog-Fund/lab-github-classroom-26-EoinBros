@@ -1,13 +1,9 @@
 package models;
 
-import utils.Utilities;
-
 public class Parrot extends Bird {
 
-    private int socialisationNeeds = 3; // 1 (low) .. 5 (high)
-    private int enrichmentNeeds = 3;    // 1 (low) .. 5 (high)
-    // Kept for backwards compatibility with older code/reports/data; no longer used for care/fees.
-    private int vocabularySize = 0;
+    private int socialisationNeeds = 3;  // 1 (low) to 5 (high)
+    private int enrichmentNeeds = 3;     // 1 (low) to 5 (high)
 
     public Parrot(String name, int age, Owner owner, int id, double wingSpan, boolean canFly, int socialisationNeeds, int enrichmentNeeds) {
         super(name, age, owner, id, wingSpan, canFly);
@@ -15,38 +11,22 @@ public class Parrot extends Bird {
         setEnrichmentNeeds(enrichmentNeeds);
     }
 
-    // Backwards-compatible constructor signature (old "vocabulary size" argument).
-    public Parrot(String name, int age, Owner owner, int id, double wingSpan, boolean canFly, int vocabularySize) {
-        this(name, age, owner, id, wingSpan, canFly, 3, 3);
-        setVocabularySize(vocabularySize);
-    }
-
-    public int getVocabularySize() {
-        return vocabularySize;
-    }
-
-    public void setVocabularySize(int vocabularySize) {
-        if (Utilities.validIntRange(vocabularySize, 0, 10000)) {
-            this.vocabularySize = vocabularySize;
-        }
-    }
-
     public int getSocialisationNeeds() {
         return socialisationNeeds;
-    }
-
-    public void setSocialisationNeeds(int socialisationNeeds) {
-        if (Utilities.validIntRange(socialisationNeeds, 1, 5)) {
-            this.socialisationNeeds = socialisationNeeds;
-        }
     }
 
     public int getEnrichmentNeeds() {
         return enrichmentNeeds;
     }
 
+    public void setSocialisationNeeds(int socialisationNeeds) {
+        if (socialisationNeeds >= 1 && socialisationNeeds <= 5) {
+            this.socialisationNeeds = socialisationNeeds;
+        }
+    }
+
     public void setEnrichmentNeeds(int enrichmentNeeds) {
-        if (Utilities.validIntRange(enrichmentNeeds, 1, 5)) {
+        if (enrichmentNeeds >= 1 && enrichmentNeeds <= 5) {
             this.enrichmentNeeds = enrichmentNeeds;
         }
     }
@@ -62,6 +42,6 @@ public class Parrot extends Bird {
         return "Parrot{" + super.toString()
                 + ", socialisationNeeds=" + socialisationNeeds
                 + ", enrichmentNeeds=" + enrichmentNeeds
-                + '}';
+                + "}";
     }
 }

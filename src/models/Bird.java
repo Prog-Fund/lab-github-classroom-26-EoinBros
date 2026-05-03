@@ -1,8 +1,6 @@
 package models;
 
-import utils.Utilities;
-
-public class Bird extends Pet {
+public abstract class Bird extends Pet {
 
     private double wingSpan = 0;
     private boolean canFly = true;
@@ -13,22 +11,22 @@ public class Bird extends Pet {
         setCanFly(canFly);
     }
 
-    public void setWingSpan(double wingSpan) {
-        if (Utilities.validRange(wingSpan, 0, 500)) {
-            this.wingSpan = wingSpan;
-        }
+    public double getWingSpan() {
+        return wingSpan;
     }
 
     public boolean isCanFly() {
         return canFly;
     }
 
-    public void setCanFly(boolean canFly) {
-        this.canFly = canFly;
+    public void setWingSpan(double wingSpan) {
+        if (wingSpan >= 0 && wingSpan <= 500) {
+            this.wingSpan = wingSpan;
+        }
     }
 
-    public double getWingSpan() {
-        return wingSpan;
+    public void setCanFly(boolean canFly) {
+        this.canFly = canFly;
     }
 
     @Override
@@ -39,22 +37,8 @@ public class Bird extends Pet {
 
     @Override
     public String toString() {
-        return "Bird{" + super.toString()
+        return super.toString()
                 + ", wingSpan=" + wingSpan
-                + ", canFly=" + canFly
-                + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bird bird = (Bird) o;
-        if (Double.compare(bird.wingSpan, wingSpan) != 0) return false;
-        if (canFly != bird.canFly) return false;
-        if (getId() != bird.getId()) return false;
-        if (getAge() != bird.getAge()) return false;
-        if (getName() != null ? !getName().equals(bird.getName()) : bird.getName() != null) return false;
-        return getOwner() != null ? getOwner().equals(bird.getOwner()) : bird.getOwner() == null;
+                + ", canFly=" + canFly;
     }
 }

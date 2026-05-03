@@ -2,7 +2,7 @@ package models;
 
 import utils.Utilities;
 
-public class Mammal extends Pet {
+public abstract class Mammal extends Pet {
 
     private char sex = 'U';
     private boolean neutered = false;
@@ -17,12 +17,26 @@ public class Mammal extends Pet {
         setVaccinated(vaccinated);
     }
 
-    public boolean isVaccinated() {
-        return vaccinated;
+    public char getSex() {
+        return sex;
+    }
+
+    public boolean isNeutered() {
+        return neutered;
     }
 
     public double getWeight() {
         return weight;
+    }
+
+    public boolean isVaccinated() {
+        return vaccinated;
+    }
+
+    public void setSex(char sex) {
+        if (sex == 'M' || sex == 'F' || sex == 'U') {
+            this.sex = sex;
+        }
     }
 
     public void setNeutered(boolean neutered) {
@@ -30,14 +44,8 @@ public class Mammal extends Pet {
     }
 
     public void setWeight(double weight) {
-        if (Utilities.validRange(weight, 0, 500)) {
+        if (weight >= 0 && weight <= 500) {
             this.weight = weight;
-        }
-    }
-
-    public void setSex(char sex) {
-        if (Utilities.validChar(sex, 'M', 'F', 'U')) {
-            this.sex = sex;
         }
     }
 
@@ -45,21 +53,12 @@ public class Mammal extends Pet {
         this.vaccinated = vaccinated;
     }
 
-    public boolean isNeutered() {
-        return neutered;
-    }
-
-    public char getSex() {
-        return sex;
-    }
-
     @Override
     public String toString() {
-        return "Mammal{" + super.toString()
+        return super.toString()
                 + ", sex=" + sex
                 + ", neutered=" + neutered
                 + ", weight=" + weight
-                + ", vaccinated=" + vaccinated
-                + '}';
+                + ", vaccinated=" + vaccinated;
     }
 }
